@@ -66,6 +66,9 @@ class Client
 	/** @var integer Cloudonix provisioned Tenant ID */
 	public $tenantId;
 
+	/** @var stdClass Cloudonix Tenant object */
+	protected $tenantObject = false;
+
 	/** @var Tenants Cloudonix Tenants REST API Connector */
 	protected $tenantsInterface;
 
@@ -291,27 +294,29 @@ class Client
 	/**
 	 * Get Self information for the provided API key
 	 *
-	 * @return array
+	 * @return stdClass
 	 */
-	public function getSelf(): array
+	public function getSelf(): stdClass
 	{
-		$myTenantData = $this->httpRequest('GET', 'keys/self');
+		if (!$this->tenantObject) {
+			$myTenantData = $this->httpRequest('GET', 'keys/self');
 
-		/* Store Tenant Information to Cache */
-		$this->cacheHandler->write($this->apikey . '-cxTenantId', $myTenantData->tenantId);
-		$this->cacheHandler->write($this->apikey . '-cxTenantName', $myTenantData->name);
-		$this->cacheHandler->write($this->apikey . '-cxTenantApikey', $myTenantData->keyId);
-		$this->cacheHandler->write($this->apikey . '-cxTenantApiSecret', $myTenantData->secret);
+			/* Store Tenant Information to Cache */
+			$this->cacheHandler->write($this->apikey . '-cxTenantId', $myTenantData->tenantId);
+			$this->cacheHandler->write($this->apikey . '-cxTenantName', $myTenantData->name);
+			$this->cacheHandler->write($this->apikey . '-cxTenantApikey', $myTenantData->keyId);
+			$this->cacheHandler->write($this->apikey . '-cxTenantApiSecret', $myTenantData->secret);
 
-		$this->tenantName = $myTenantData->name;
-		$this->tenantId = $myTenantData->tenantId;
+			$this->tenantName = $myTenantData->name;
+			$this->tenantId = $myTenantData->tenantId;
 
-		$result = [
-			'tenant-name' => $this->tenantName,
-			'tenant-id' => $this->tenantId,
-			'datamodel' => $myTenantData
-		];
+			$this->tenantObject = (object)[
+				'tenant-name' => $this->tenantName,
+				'tenant-id' => $this->tenantId,
+				'datamodel' => $myTenantData
+			];
+		}
 
-		return $result;
+		return $this->tenantObject;
 	}
 }

@@ -38,7 +38,7 @@ class Dnids implements LazyDatamodel
 		if (!$client)
 			throw new Exception('Datamodel construction error', 500, null);
 		$this->client = $client;
-
+		$this->client->getSelf();
 	}
 
 	/**
