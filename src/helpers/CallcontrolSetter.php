@@ -179,7 +179,7 @@ class CallcontrolSetter
 						throw new WorkflowViolation('`setOutboundDestination` MUST be called before `run`', 500, null);
 
 					$result = $this->client->httpRequest('POST',
-						$this->baseQuery . $this->domainIdent . '/outgoing/' . $this->subscriberMsisdn, $this->actionData);
+						$this->baseQuery . $this->domainIdent . '/outgoing/' . $this->outboundSubscriber, $this->actionData);
 					break;
 				case "initsessioninbound":
 					if (!array_key_exists('destination', $this->actionData))
