@@ -72,7 +72,7 @@ class CallcontrolSetter
 	public function setOutboundDestination($param)
 	{
 		$this->actionData['destination'] = $param;
-		return $this->actionData;
+		return $this;
 	}
 
 	public function setInboundSubscriber($param)
