@@ -171,17 +171,17 @@ class CallcontrolSetter
 				throw new WorkflowViolation('`setDomainId|setDomainName|setDomain` MUST be called before `run`', 500, null);
 
 			switch (strtolower($this->action)) {
-				case "initSessionOutbound":
+				case "initsessionoutbound":
 					if (!$this->outboundSubscriber)
 						throw new WorkflowViolation('`setOutboundSubscriber` MUST be called before `run`', 500, null);
 
-					if (!array_key_exists('destination', $this->action))
+					if (!array_key_exists('destination', $this->actionData))
 						throw new WorkflowViolation('`setOutboundDestination` MUST be called before `run`', 500, null);
 
 					$result = $this->client->httpRequest('POST',
 						$this->baseQuery . $this->domainIdent . '/outgoing/' . $this->subscriberMsisdn, $this->actionData);
 					break;
-				case "initSessionInbound":
+				case "initsessioninbound":
 					if (!array_key_exists('destination', $this->actionData))
 						throw new WorkflowViolation('`setInboundSubscriber` MUST be called before `run`', 500, null);
 
@@ -189,18 +189,18 @@ class CallcontrolSetter
 						$this->baseQuery . $this->domainIdent . '/incoming/' . $this->actionData['destination'], $this->actionData);
 
 					break;
-				case "sessionUpdate":
+				case "sessionupdate":
 					if (!$this->sessionToken)
 						throw new WorkflowViolation('`setSessionToken` MUST be called before `run`', 500, null);
 
-					if (array_key_exists('destination', $this->action))
+					if (array_key_exists('destination', $this->actionData))
 						throw new WorkflowViolation('`setOutboundDestination` is an illegal action for `sessionUpdate`', 500, null);
 
 					$result = $this->client->httpRequest('PATCH',
 						$this->baseQuery . $this->domainIdent . '/sessions/' . $this->sessionToken, $this->actionData);
 
 					break;
-				case "sessionDestroy":
+				case "sessiondestroy":
 					if (!$this->sessionToken)
 						throw new WorkflowViolation('`setSessionToken` MUST be called before `run`', 500, null);
 
@@ -211,7 +211,7 @@ class CallcontrolSetter
 						$this->baseQuery . $this->domainIdent . '/sessions/' . $this->sessionToken, $this->actionData);
 
 					break;
-				case "sessionNotifyRinging":
+				case "sessionnotifyringing":
 
 					if (!$this->sessionToken)
 						throw new WorkflowViolation('`setSessionToken` MUST be called before `run`', 500, null);

@@ -68,17 +68,17 @@ class CallcontrolGetter
 	public function run()
 	{
 		try {
-			if ((!$this->domainId) || (!$this->baseQuery))
+			if (!$this->domainId)
 				throw new WorkflowViolation('`byDomainId|byDomainName|byDomain` MUST be called before `run`', 500, null);
 
 			switch (strtolower($this->action)) {
-				case "sessionGet":
+				case "sessionget":
 					if (!$this->sessionToken)
 						throw new WorkflowViolation('`setSessionToken` MUST be called before `run`', 500, null);
 
 					$result = $this->client->httpRequest('GET', $this->baseQuery . $this->domainId . '/sessions/' . $this->sessionToken, $this->actionData);
 					break;
-				case "sessionList":
+				case "sessionlist":
 					$result = $this->client->httpRequest('GET', $this->baseQuery . $this->domainId . '/sessions', $this->actionData);
 					break;
 			}
