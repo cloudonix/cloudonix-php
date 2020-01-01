@@ -25,6 +25,7 @@ use Cloudonix\Datamodels\Trunks as Trunks;
 use Cloudonix\Datamodels\Subscribers as Subscribers;
 use Cloudonix\Datamodels\Domains as Domains;
 use Cloudonix\Datamodels\Dnids as Dnids;
+use Cloudonix\Datamodels\Callcontrol as Callcontrol;
 use Cloudonix\Datamodels\Applications as Applications;
 use Cloudonix\WorkflowViolation as WorkflowViolation;
 use Cloudonix\WorkflowViolationBadResponse as WorkflowViolationBadResponse;
@@ -86,6 +87,9 @@ class Client
 
 	/** @var Dnids Cloudonix Dnids REST API Connector */
 	protected $dnidsInterface;
+
+	/** @var  Call control REST API Connector */
+	protected $callcontrolInterface;
 
 	/**
 	 * Client constructor.
@@ -215,6 +219,14 @@ class Client
 			$this->trunksInterface = new Trunks($this);
 		}
 		return $this->trunksInterface;
+	}
+
+	public function callcontrol(): Callcontrol
+	{
+		if (!$this->callcontrolInterface) {
+			$this->callcontrolInterface = new Callcontrol($this);
+		}
+		return $this->callcontrolInterface;
 	}
 
 	/**
