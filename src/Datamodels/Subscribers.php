@@ -86,13 +86,14 @@ class Subscribers implements LazyDatamodel
 	}
 
 	/**
-	 * Create a Subscriber API key in a domain - not applicable
+	 * Create a Subscriber API key in a domain
 	 *
-	 * @return false
+	 * @return SubscriberGetter A subscriber API key object
 	 */
 	public function createApikey()
 	{
-		return false;
+		$this->subscriberSetter = new SubscriberSetter($this->client, 'createApikey');
+		return $this->subscriberSetter;
 	}
 
 	/**
@@ -106,13 +107,14 @@ class Subscribers implements LazyDatamodel
 	}
 
 	/**
-	 * Delete a Subscriber API key in a domain - not applicable
+	 * Delete a Subscriber API key in a domain
 	 *
-	 * @return false
+	 * @return SubscriberSetter  True on success
 	 */
 	public function deleteApikey()
 	{
-		return false;
+		$this->subscriberSetter = new SubscriberSetter($this->client, 'deleteApikey');
+		return $this->subscriberSetter;
 	}
 
 	/**

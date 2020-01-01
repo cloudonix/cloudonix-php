@@ -129,6 +129,16 @@ class SubscriberSetter
 					throw new MissingSubscriberIdException('`setSubscriberId|bySubscriberId` MUST be called before `run`', 500, null);
 				$result = $this->client->httpRequest('DELETE', $this->baseQuery . '/subscribers/' . $this->id);
 				break;
+			case "createApikey":
+				if (!$this->id)
+					throw new MissingSubscriberIdException('`setSubscriberId|bySubscriberId` MUST be called before `run`', 500, null);
+				$result = $this->client->httpRequest('POST', $this->baseQuery . '/subscribers/'  . $this->id . '/apikeys' , $this->actionData);
+				break;
+			case "deleteApikey":
+				if (!$this->id)
+					throw new MissingSubscriberIdException('`setSubscriberId|bySubscriberId` MUST be called before `run`', 500, null);
+				$result = $this->client->httpRequest('DELETE', $this->baseQuery . '/subscribers/'  . $this->id . '/apikeys' , $this->actionData);
+				break;
 			default:
 				return false;
 				break;
